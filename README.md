@@ -28,7 +28,7 @@ A simple example how to use the module is demonstrated [here](RegressionTree_exa
 ```bash
 python RegressionTree_example.py
 ```
-More detailed documentation and performance tests against various data sets can be found [here](RegressionTree). 
+More detailed documentation and performance tests against various data sets can be found [here](RegressionTree.ipynb). 
 
 ## License
 
