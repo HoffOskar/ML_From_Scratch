@@ -63,18 +63,21 @@ class RegressionTree:
         
         ### Stop splitting if max_depth is reached
         if self.max_depth is not None and depth >= self.max_depth:
-            return None
+            return Node(node_value=y_train[sample_idx].mean())
+            #return None
         
         ### Stop splitting if node has too few samples
         if len(sample_idx) < self.min_samples_split:
-            return None
+            return Node(node_value=y_train[sample_idx].mean())
+            #return None
         
         ### Find the best split
         split = self._find_best_split(X_train[sample_idx], y_train[sample_idx])
         
         ### Stop splitting if no split is found
         if split is None:
-            return None
+            return Node(node_value=y_train[sample_idx].mean())
+            #return None
         
         ### Unpack the split
         feature_idx, x_threshold, left_idx, right_idx = split
