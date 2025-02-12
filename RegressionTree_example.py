@@ -1,16 +1,19 @@
 ### Imports
 import numpy as np
-from utils.tree import RegressionTree
+
 from utils.metrics import MSE
+from utils.tree import RegressionTree
+
 
 ### Function for data generation
-def f(x, sigma):     
-    return x**2+ np.random.normal(0, sigma, len(x))
+def f(x, sigma):
+    return x**2 + np.random.normal(0, sigma, len(x))
+
 
 ### Data
 np.random.seed(10)
 X = np.linspace(-1, 1, 50).reshape(-1, 1)
-y = f(X, 0.2)
+y = f(X.flatten(), 0.2)
 
 ### Hyperparameters
 max_depth = 3
@@ -26,4 +29,4 @@ tree.fit(X, y)
 y_pred = tree.predict(X)
 
 ### Calculate the training MSE
-print(f'Training MSE: {round(MSE(y, y_pred), 3)}')
+print(f"Training MSE: {round(MSE(y, y_pred), 3)}")
