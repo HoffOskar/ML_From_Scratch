@@ -1,0 +1,35 @@
+# ML From Scratch
+
+Welcome to the ML From Scratch repository! This project aims to implement various machine learning algorithms from scratch using Python. The goal is to understand the inner workings of these algorithms by building them without relying on any machine learning libraries.
+
+Some of the work in this repository was done as part of the practical course **"Mathematics of Machine Learning"** at the **University of Graz**.
+
+## Algorithms Implemented
+
+- Decision Trees for Regression
+
+## Installation
+
+To get started, clone the repository and install the required dependencies:
+
+```bash
+git clone https://github.com/HoffOskar/ML_From_Scratch.git
+cd ML_From_Scratch
+pip install -r requirements.txt
+```
+
+## Usage
+
+Each algorithm is implemented in its own Python file in [utils](utils/). 
+
+### Decision Tree for Regression
+
+A simple example how to use the module is demonstrated [here](RegressionTree_example.py):
+```bash
+python RegressionTree_example.py
+```
+
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
