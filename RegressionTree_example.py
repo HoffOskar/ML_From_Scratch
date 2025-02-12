@@ -10,7 +10,7 @@ def f(x, sigma):
 ### Data
 np.random.seed(10)
 X = np.linspace(-1, 1, 50).reshape(-1, 1)
-y = f(X, 0.2)
+y = f(X.flatten(), 0.2)
 
 ### Hyperparameters
 max_depth = 3
