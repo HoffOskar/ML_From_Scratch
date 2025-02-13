@@ -24,11 +24,11 @@ Each algorithm is implemented in its own Python file in [utils](utils/).
 
 ### Decision Tree for Regression
 
-A simple example how to use the module is demonstrated [here](RegressionTree_example.py):
+A simple example how to use the module is demonstrated [here](RegTree_example.py):
 ```bash
 python RegressionTree_example.py
 ```
-More detailed documentation and performance tests against various data sets can be found [here](RegressionTree.ipynb). 
+More detailed documentation and performance tests against various data sets can be found [here](RegTree.ipynb). 
 
 ## License
 
