@@ -7,6 +7,7 @@ Some of the work in this repository was done as part of the practical course **"
 ## Algorithms Implemented
 
 - Decision Trees for Regression
+- k-Nearest Neighbor Classifier
 
 ## Installation
 
@@ -29,6 +30,14 @@ A simple example how to use the module is demonstrated [here](RegTree_example.py
 python RegressionTree_example.py
 ```
 More detailed documentation and performance tests against various data sets can be found [here](RegTree.ipynb). 
+
+## k-Nearest Neighbor Classifier
+
+A simple example how to use the module is demonstrated [here](KNN_clf_example.py):
+```bash
+python KNN_clf_example.py
+```
+More detailed documentation and decision boundary visualization with various data sets can be found [here](KNN.ipynb). 
 
 ## License
 
