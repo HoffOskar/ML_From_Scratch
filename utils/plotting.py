@@ -1,7 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-def plot_boundary(X_test, y_test, model): 
+
+def plot_boundary(X_test, y_test, model):
     """
     Plot the decision boundary for a trained classifier and true labels of X_test.
 
@@ -24,9 +25,11 @@ def plot_boundary(X_test, y_test, model):
     zz = y_pred.reshape(x0.shape)
 
     ### Plot the decision boundary
-    ax.contourf(x0, x1, zz, alpha=0.2)                        # Fill the decision boundary
-    ax.contour(x0, x1, zz, colors='red', linewidths=0.4)      # Add decision boundary lines
-    ax.scatter(X_test[:, 0], X_test[:, 1], c=y_test, edgecolor='black')      # Plot original data points
+    ax.contourf(x0, x1, zz, alpha=0.2)  # Fill the decision boundary
+    ax.contour(x0, x1, zz, colors="red", linewidths=0.4)  # Add decision boundary lines
+    ax.scatter(
+        X_test[:, 0], X_test[:, 1], c=y_test, edgecolor="black"
+    )  # Plot original data points
 
     ### Remove axis labels & ticks for clean visualization
     ax.set_box_aspect(1)
@@ -35,7 +38,8 @@ def plot_boundary(X_test, y_test, model):
     ax.xaxis.set_tick_params(labelbottom=False)
     ax.yaxis.set_tick_params(labelleft=False)
 
-def subplot_boundary(ax, X_test, y_test, model): 
+
+def subplot_boundary(ax, X_test, y_test, model):
     """
     Plot the decision boundary for a trained classifier and true labels of X_test on a given subplot.
 
@@ -56,9 +60,11 @@ def subplot_boundary(ax, X_test, y_test, model):
     zz = y_pred.reshape(x0.shape)
 
     ### Plot the decision boundary
-    ax.contourf(x0, x1, zz, alpha=0.2)                        # Fill the decision boundary
-    ax.contour(x0, x1, zz, colors='red', linewidths=0.4)      # Add decision boundary lines
-    ax.scatter(X_test[:, 0], X_test[:, 1], c=y_test, edgecolor='black')  # Plot original data points
+    ax.contourf(x0, x1, zz, alpha=0.2)  # Fill the decision boundary
+    ax.contour(x0, x1, zz, colors="red", linewidths=0.4)  # Add decision boundary lines
+    ax.scatter(
+        X_test[:, 0], X_test[:, 1], c=y_test, edgecolor="black"
+    )  # Plot original data points
 
     ### Remove axis labels & ticks for clean visualization
     ax.set_box_aspect(1)
