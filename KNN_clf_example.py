@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
-from utils.knn import KNN
+from utils.knn import KNeighborsClassifier
 from utils.metrics import accuracy
 
 ### Settings
@@ -24,7 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 ### Instantiate custom KNN Classifier
-knn = KNN(k=3)
+knn = KNeighborsClassifier(k=3)
 
 ### Fit
 knn.fit(X_train, y_train)

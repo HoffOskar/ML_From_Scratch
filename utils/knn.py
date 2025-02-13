@@ -2,7 +2,7 @@
 import numpy as np
 
 
-class KNN:
+class KNeighborsClassifier:
     """
     A simple K-Nearest Neighbors class.
 
@@ -75,4 +75,4 @@ class KNN:
         Returns:
             distances (np.array):  2D NumPy array with shape (n_test, n_train)
         """
-        return ((X_test[:, np.newaxis, :] - X_train[np.newaxis, :, :]) ** 2).sum(axis=2)
+        return np.sqrt(((X_test[:, np.newaxis, :] - X_train[np.newaxis, :, :]) ** 2).sum(axis=2))
