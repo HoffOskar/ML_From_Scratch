@@ -8,6 +8,7 @@ Some of the work in this repository was done as part of the practical course **"
 
 - Decision Trees for Regression
 - k-Nearest Neighbor Classifier
+- KMeans Clustering
 
 ## Installation
 
@@ -38,6 +39,14 @@ A simple example how to use the module is demonstrated [here](KNN_clf_example.py
 python KNN_clf_example.py
 ```
 More detailed documentation and decision boundary visualization with various data sets can be found [here](KNN.ipynb). 
+
+## KMeans Clustering
+
+A simple example how to use the module is demonstrated [here](KMeans_example.py):
+```bash
+python KMeans_example.py
+```
+More detailed documentation and demonstration with various data sets can be found [here](KMeans.ipynb). 
 
 ## License
 
