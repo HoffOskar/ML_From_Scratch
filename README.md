@@ -40,7 +40,7 @@ python KNN_clf_example.py
 ```
 More detailed documentation and decision boundary visualization with various data sets can be found [here](KNN.ipynb). 
 
-## KMeans Clustering
+## k-Means Clustering
 
 A simple example how to use the module is demonstrated [here](KMeans_example.py):
 ```bash
