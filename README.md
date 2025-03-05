@@ -6,9 +6,15 @@ Some of the work in this repository was done as part of the practical course **"
 
 ## Algorithms Implemented
 
-- Decision Trees for Regression
-- k-Nearest Neighbor Classifier
-- KMeans Clustering
+**Regression**
+- [Decision Tree](Regression/RegTree.ipynb)
+- [Shallow Neural Network](Regression/MLP.ipynb)
+
+**Classificaton**
+- [k-Nearest Neighbor](Classification/KNN.ipynb)
+
+**Clustering**
+- [KMeans Clustering](Clustering/KMeans.ipynb)
 
 ## Installation
 
@@ -22,31 +28,15 @@ pip install -r requirements.txt
 
 ## Usage
 
-Each algorithm is implemented in its own Python file in [utils](utils/). 
+Each algorithm is implemented as a class object. The code can be found in the respective Python file in [utils](utils/). For each algorithm exists a simple example as Python file and a more detailed jupyter notebook. E.g.
 
 ### Decision Tree for Regression
 
-A simple example how to use the module is demonstrated [here](RegTree_example.py):
+A simple example how to use the module is demonstrated in this Python [file](example_RegTree.py):
 ```bash
 python RegressionTree_example.py
 ```
-More detailed documentation and performance tests against various data sets can be found [here](RegTree.ipynb). 
-
-## k-Nearest Neighbor Classifier
-
-A simple example how to use the module is demonstrated [here](KNN_clf_example.py):
-```bash
-python KNN_clf_example.py
-```
-More detailed documentation and decision boundary visualization with various data sets can be found [here](KNN.ipynb). 
-
-## k-Means Clustering
-
-A simple example how to use the module is demonstrated [here](KMeans_example.py):
-```bash
-python KMeans_example.py
-```
-More detailed documentation and demonstration with various data sets can be found [here](KMeans.ipynb). 
+More detailed documentation and performance tests against various data sets can be found in this [notebook](Regression/RegTree.ipynb). The same structure exists for every algorithm. 
 
 ## License
 
