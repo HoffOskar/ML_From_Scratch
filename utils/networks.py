@@ -19,13 +19,21 @@ class MLP:
         loss (np.array): Loss function values during training (max_iter,)
     """
 
-    def __init__(self, hidden_dim=10, learning_rate=0.05, max_iter=3000, alpha=0.001):
+    def __init__(
+        self,
+        hidden_dim=10,
+        learning_rate=0.05,
+        max_iter=3000,
+        alpha=0.001,
+        random_state=42,
+    ):
         self.hidden_dim = hidden_dim
         self.learning_rate = learning_rate
         self.max_iter = max_iter
         self.alpha = alpha
+        self.random_state = random_state
 
-    def fit(self, X, Y, cold_start=True, random_state=10):
+    def fit(self, X, Y, cold_start=True):
         """
         Fit the MLP model to the data.
 
@@ -48,15 +56,23 @@ class MLP:
 
         ### Initialize random weights and biases
         if cold_start:
-            np.random.seed(random_state)
-            self.W1 = np.random.uniform(-10, 10, size=(h, d))
-            self.W2 = np.random.uniform(-10, 10, size=(o, h))
-            self.b1 = np.random.uniform(-10, 10, size=(h, 1))
-            self.b2 = np.random.uniform(-10, 10, size=(o, 1))
+            np.random.seed(self.random_state)
+
+            ### Initialize weights with Xavier initialization
+            limit_W1 = np.sqrt(6 / (d + h))
+            self.W1 = np.random.uniform(-limit_W1, limit_W1, size=(h, d))
+
+            limit_W2 = np.sqrt(6 / (h + o))
+            self.W2 = np.random.uniform(-limit_W2, limit_W2, size=(o, h))
+
+            ### Initialize biases to zero
+            self.b1 = np.zeros((h, 1))
+            self.b2 = np.zeros((o, 1))
 
         ### Training loop
         iter = 0  # Iteration counter
         losses = np.zeros(max_it)  # Container for the regularized loss function
+        MSEs = np.zeros(max_it)  # Container for the mean squared error
 
         while iter < max_it:
             ### Predict Labels (Forward Pass)
@@ -71,35 +87,38 @@ class MLP:
             delta_2 = (Y_pred - Y) * (2 / n)  # (n, o)
 
             ### Gradients for W2 and b2
-            grad_W2 = delta_2.T @ H.T  # (o, h)
-            grad_b2 = np.sum(delta_2, axis=0, keepdims=True).T  # (o, 1)
+            grad_W2 = delta_2.T @ H.T + alpha * self.W2  # (o, h)
+            grad_b2 = np.sum(delta_2, axis=0, keepdims=True) + alpha * self.b2  # (o, 1)
 
             ### Backprop to hidden layer
             delta_1 = (self.W2.T @ delta_2.T) * (1 - H**2)  # (h, n)
 
             ### Gradients for W1 and b1
-            grad_W1 = delta_1 @ X  # (h, d)
-            grad_b1 = np.sum(delta_1, axis=1, keepdims=True)  # (h, 1)
+            grad_W1 = delta_1 @ X + alpha * self.W1  # (h, d)
+            grad_b1 = np.sum(delta_1, axis=1, keepdims=True) + alpha * self.b1  # (h, 1)
 
             ### Update Parameters (Gradient Descent)
-            self.W1 -= step_size * (grad_W1 + alpha * self.W1)
-            self.b1 -= step_size * (grad_b1 + alpha * self.b1)
-            self.W2 -= step_size * (grad_W2 + alpha * self.W2)
-            self.b2 -= step_size * (grad_b2 + alpha * self.b2)
+            self.W1 -= step_size * grad_W1
+            self.b1 -= step_size * grad_b1
+            self.W2 -= step_size * grad_W2
+            self.b2 -= step_size * grad_b2
 
             ### Compute Loss
-            losses[iter] = ((Y - Y_pred) @ (Y - Y_pred).T).sum() / (2 * n) + alpha * (
+            losses[iter] = ((Y - Y_pred) ** 2).sum() / (2 * n) + alpha * (
                 (self.b1**2).sum()
                 + (self.b2**2).sum()
                 + (self.W1**2).sum()
                 + (self.W2**2).sum()
             ) / 2
 
+            MSEs[iter] = ((Y - Y_pred) ** 2).sum() / (2 * n)
+
             ### Increment iteration counter
             iter += 1
 
         ### Save loss function values
         self.loss = losses[:iter]
+        self.mse = MSEs[:iter]
 
     def predict(self, X):
         """
