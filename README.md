@@ -7,6 +7,7 @@ Some of the work in this repository was done as part of the practical course **"
 ## Algorithms Implemented
 
 **Regression**
+- [Ridge Regression](Regression/Ridge.ipynb)
 - [Decision Tree](Regression/RegTree.ipynb)
 - [Shallow Neural Network](Regression/MLP.ipynb)
 
