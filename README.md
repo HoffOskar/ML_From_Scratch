@@ -13,6 +13,7 @@ Some of the work in this repository was done as part of the practical course **"
 
 **Classificaton**
 - [k-Nearest Neighbor](Classification/KNN.ipynb)
+- [Binary Logistic Regression](Classification/LogReg.ipynb)
 
 **Clustering**
 - [KMeans Clustering](Clustering/KMeans.ipynb)
