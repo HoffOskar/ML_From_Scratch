@@ -3,3 +3,4 @@ pandas
 matplotlib
 scikit-learn
 tqdm
+seaborn
