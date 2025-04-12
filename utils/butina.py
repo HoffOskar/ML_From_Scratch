@@ -3,7 +3,6 @@ import pandas as pd
 from tqdm import tqdm
 
 
-
 class Butina:
     """
     Butina clustering algorithm for fingerprints.
@@ -20,31 +19,29 @@ class Butina:
         DataFrame with the cluster assignments. Same length and index as df.
     """
 
-    def __init__(self, threshold=0.75):
-        self.threshold = threshold
+    def __init__(self):
+        self.threshold = None
         self.df = None
         self.similarity_df = None
         self.cluster_df = None
 
     def fit(self, df):
         """
-        Compute the similarity matrix and assign all compounds to clusters.
+        Compute the similarity matrix.
 
         Parameters
         ----------
         df : pd.DataFrame
             DataFrame with the fingerprints. Requires the index to be unique.
-
+        
         Returns
         -------
-        cluster_df : pd.DataFrame
-            DataFrame with the cluster assignments. Same length and index as df.
+        self : Butina
+            The instance of the Butina class.
 
-        Notes
-        -----
-        - Calls _compute_similarity_matrix() to compute the similarity matrix.
-        - Calls _assign_next_cluster() to assign clusters in a loop.
-
+        Side Effects
+        ------------
+        - Updates the similarity_df attribute with the similarity matrix.
         """
 
         ### Check if the input DataFrame has unique indexes
@@ -54,19 +51,64 @@ class Butina:
         ### Assigne the input DataFrame to the instance
         self.df = df.copy()
 
+        ### Convert the DataFrame with fingerprints to a NumPy array
+        X = df.to_numpy().astype(int)
+
+        ### Compute the intersection of the fingerprints
+        intersect = X @ X.T
+
+        ### Compute the number of on bits in each fingerprint
+        on_bits = X.sum(axis=1)
+
+        ### Compute the denominator
+        denom = on_bits[:, None] + on_bits[None, :] - intersect
+
+        ### Compute the distance matrix
+        sim = np.divide(
+            intersect,
+            denom,
+            out=np.zeros_like(intersect, dtype=float),
+            where=denom != 0,
+        )
+
+        ### Set the diagonal to 0
+        np.fill_diagonal(sim, 0)
+
+        ### Set the similarity matrix
+        self.similarity_df = pd.DataFrame(
+            sim, index=self.df.index, columns=self.df.index
+        )
+        return self
+
+    def predict(self, threshold=0.75):
+        """
+        Perform the clustering using the Butina algorithm.
+
+        Parameters
+        ----------
+        threshold : float
+            Similarity threshold for clustering. Default is 0.75.
+
+        Returns
+        -------
+        cluster_df : pd.DataFrame
+            DataFrame with the cluster assignments. Same length and index as df.
+
+        Side Effects
+        ------------
+        - Updates the cluster_df attribute with the cluster assignments.
+        """
+
         ### Instantiate the DataFrame to store the cluster assignments with NaN values
-        self.cluster_df = pd.DataFrame(index=df.index, columns=["Cluster"])
+        self.cluster_df = pd.DataFrame(index=self.df.index, columns=["Cluster"])
         self.cluster_df["Centroid"] = False
         self.cluster_df["Singleton"] = False
 
-        ### Verbose output
-        print("Similarity matrix computation")
-
-        ### Compute the similarity matrix
-        self._compute_similarity_matrix()
+        ### Set the threshold
+        self.threshold = threshold
 
         ### Verbose output
-        print("Clustering")
+        print("Clustering - threshold: ", threshold)
 
         ### Progress bar
         with tqdm(total=100) as pbar:
@@ -124,40 +166,3 @@ class Butina:
 
         ### Return the number of assigned cluster members
         return len(neigb_id) + 1
-
-    def _compute_similarity_matrix(self):
-        """
-        Compute the similarity matrix for the fingerprints in the DataFrame.
-
-        Notes
-        -----
-        The similarity is computed as the Tanimoto index, which is defined as the size of the intersection divided by the size of the union of two sets.
-        """
-
-        ### Convert the DataFrame with fingerprints to a NumPy array
-        X = self.df.to_numpy().astype(int)
-
-        ### Compute the intersection of the fingerprints
-        intersect = X @ X.T
-
-        ### Compute the number of on bits in each fingerprint
-        on_bits = X.sum(axis=1)
-
-        ### Compute the denominator
-        denom = on_bits[:, None] + on_bits[None, :] - intersect
-
-        ### Compute the distance matrix
-        sim = np.divide(
-            intersect,
-            denom,
-            out=np.zeros_like(intersect, dtype=float),
-            where=denom != 0,
-        )
-
-        ### Set the diagonal to 0
-        np.fill_diagonal(sim, 0)
-
-        ### Set the similarity matrix
-        self.similarity_df = pd.DataFrame(
-            sim, index=self.df.index, columns=self.df.index
-        )

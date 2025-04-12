@@ -17,6 +17,7 @@ Some of the work in this repository was done as part of the practical course **"
 
 **Clustering**
 - [KMeans Clustering](Clustering/KMeans.ipynb)
+- [Butina Clustering](Clustering/Butina.ipynb)
 
 ## Installation
 

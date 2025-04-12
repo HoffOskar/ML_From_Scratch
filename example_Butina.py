@@ -8,7 +8,10 @@ import matplotlib.pyplot as plt
 df = pd.read_pickle("Clustering/data/morgan_2048_df.pkl")
 
 ### Fit the model
-pred_df = Butina(threshold=0.75).fit(df)
+model = Butina().fit(df)
+
+### Clustering
+pred_df = model.predict(threshold=0.75)
 
 ### Countplot
 plt.figure(figsize=(10, 5))
