@@ -1,5 +1,5 @@
 ### Imports
-from utils.butina import Butina
+from utils.chem import Butina
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ df = pd.read_pickle("Clustering/data/morgan_2048_df.pkl")
 model = Butina().fit(df)
 
 ### Clustering
-pred_df = model.predict(threshold=0.75)
+pred_df = model.predict(threshold=0.66)
 
 ### Countplot
 plt.figure(figsize=(10, 5))
