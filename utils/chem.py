@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
+class KennardStone:
+    def __init__(self, X):
+        self.X = X
+        
 
 class Butina:
     """
