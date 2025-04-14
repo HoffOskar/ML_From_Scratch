@@ -5,19 +5,21 @@ Welcome to the ML From Scratch repository! This project aims to implement variou
 Some of the work in this repository was done as part of the practical course **"Mathematics of Machine Learning"** at the **University of Graz**.
 
 ## Algorithms Implemented
+Each algorithm is described in a **jupyter notebook**, implemented in a **utility class**, and demonstrated in a simple **example file**:
 
 **Regression**
-- [Ridge Regression](Regression/Ridge.ipynb)
-- [Decision Tree](Regression/RegTree.ipynb)
-- [Shallow Neural Network](Regression/MLP.ipynb)
+- [Ridge Regression](Regression/Ridge.ipynb) [`exp.py`](example_Ridge.py) | [utility class](utils/linear.py)
+- [Decision Tree](Regression/RegTree.ipynb) [`exp.py`](example_RegTree.py) | [utility class](utils/tree.py)
+- [Shallow Neural Network](Regression/MLP.ipynb) [`exp.py`](example_MLP.py) | [utility class](utils/networks.py)
 
 **Classificaton**
-- [k-Nearest Neighbor](Classification/KNN.ipynb)
-- [Binary Logistic Regression](Classification/LogReg.ipynb)
+- [k-Nearest Neighbor](Classification/KNN.ipynb) [`exp.py`](example_KNN_clf.py) | [utility class](utils/knn.py)
+- [Binary Logistic Regression](Classification/LogReg.ipynb) [`exp.py`](example_LogReg.py) | [utility class](utils/linear.py)
 
 **Clustering**
-- [KMeans Clustering](Clustering/KMeans.ipynb)
-- [Butina Clustering](Clustering/Butina.ipynb)
+- [KMeans Clustering](Clustering/KMeans.ipynb) [`exp.py`](example_KMeans.py) | [utility class](utils/knn.py)
+- [Butina Clustering](Clustering/Butina.ipynb) [`exp.py`](example_Butina.py) | [utility class](utils/chem.py)
+- [Kennard-Stone Splitting](Clustering/KennardStone.ipynb) [`exp.py`](example_KennardStone.py) | [utility class](utils/chem.py)
 
 ## Installation
 
