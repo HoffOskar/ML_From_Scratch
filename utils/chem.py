@@ -19,8 +19,10 @@ class Butina:
         Input DataFrame with the fingerprints.
     similarity_df : pd.DataFrame
         DataFrame with the similarity matrix.
-    cluster_df : pd.DataFrame
+    compound_df : pd.DataFrame
         DataFrame with the cluster assignments. Same length and index as df.
+    cluster_df : pd.DataFrame
+        DataFrame with the cluster summary. 
     """
 
     def __init__(self):
@@ -28,6 +30,7 @@ class Butina:
         self.df = None
         self.similarity_df = None
         self.cluster_df = None
+        self.compound_df = None
 
     def fit(self, df):
         """
@@ -95,18 +98,20 @@ class Butina:
 
         Returns
         -------
-        cluster_df : pd.DataFrame
+        compound_df : pd.DataFrame
             DataFrame with the cluster assignments. Same length and index as df.
+        cluster_df : pd.DataFrame
+            DataFrame with the cluster summary. 
 
         Side Effects
         ------------
-        - Updates the cluster_df attribute with the cluster assignments.
+        - Updates the compound_df attribute with the cluster assignments.
         """
 
         ### Instantiate the DataFrame to store the cluster assignments with NaN values
-        self.cluster_df = pd.DataFrame(index=self.df.index, columns=["Cluster"])
-        self.cluster_df["Centroid"] = False
-        self.cluster_df["Singleton"] = False
+        self.compound_df = pd.DataFrame(index=self.df.index, columns=["Cluster"])
+        self.compound_df["Centroid"] = False
+        self.compound_df["Singleton"] = False
 
         ### Set the threshold
         self.threshold = threshold
@@ -117,7 +122,7 @@ class Butina:
         ### Progress bar
         with tqdm(total=100) as pbar:
             ### Loop until all compounds are assigned to a cluster
-            while self.cluster_df["Cluster"].isna().any():
+            while self.compound_df["Cluster"].isna().any():
                 ### Get the next cluster members
                 cluster_members = self._assign_next_cluster()
 
@@ -125,9 +130,12 @@ class Butina:
                 pbar.update(cluster_members / len(self.df) * 100)
 
         ### Format data types
-        self.cluster_df["Cluster"] = self.cluster_df["Cluster"].astype(int)
+        self.compound_df["Cluster"] = self.compound_df["Cluster"].astype(int)
 
-        return self.cluster_df
+        ### Cluster summary
+        self.cluster_df = self.compound_df['Cluster'].value_counts().sort_index()
+
+        return self.compound_df
 
     def _assign_next_cluster(self):
         """
@@ -140,15 +148,15 @@ class Butina:
 
         Side Effects
         ------------
-        - Updates the cluster_df DataFrame with the cluster assignments.
+        - Updates the compound_df DataFrame with the cluster assignments.
         """
 
         ### Define the ID of the next cluster (starting from 0)
-        last_cluster_id = self.cluster_df["Cluster"].max()
+        last_cluster_id = self.compound_df["Cluster"].max()
         next_cluster_id = 0 if pd.isna(last_cluster_id) else int(last_cluster_id + 1)
 
         ### Subset the similarity matrix for all compounds without cluster assignment
-        unassigned_mask = self.cluster_df["Cluster"].isna()
+        unassigned_mask = self.compound_df["Cluster"].isna()
         free_sim_df = self.similarity_df.loc[unassigned_mask, unassigned_mask]
 
         ### Identify the centroid of the next cluster (the compound with most neighbors)
@@ -158,15 +166,15 @@ class Butina:
         neigb_id = free_sim_df.loc[free_sim_df[centroid_id] > self.threshold].index
 
         ### Assign the cluster ID to the centroid and its neighbors
-        self.cluster_df.loc[centroid_id, "Cluster"] = next_cluster_id
-        self.cluster_df.loc[neigb_id, "Cluster"] = next_cluster_id
+        self.compound_df.loc[centroid_id, "Cluster"] = next_cluster_id
+        self.compound_df.loc[neigb_id, "Cluster"] = next_cluster_id
 
         ### Assign the Centroid flag
-        self.cluster_df.loc[centroid_id, "Centroid"] = True
+        self.compound_df.loc[centroid_id, "Centroid"] = True
 
         ### Assign the Singleton flag to the centroid if it has no neighbors
         if len(neigb_id) == 0:
-            self.cluster_df.loc[centroid_id, "Singleton"] = True
+            self.compound_df.loc[centroid_id, "Singleton"] = True
 
         ### Return the number of assigned cluster members
         return len(neigb_id) + 1
