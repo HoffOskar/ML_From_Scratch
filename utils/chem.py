@@ -287,11 +287,8 @@ class KennardStone:
         n_total_samples = len(self.df)
         n_sub_samples = int(n_total_samples * subset_size)
 
-        ### Initialize the boolean mask for the subset
-        subset_mask = pd.Series(False, index=self.df.index)
-
-        ### Define the first sample (.idxmax() only returns the first occurrence)
-        subset_mask.loc[self.distance_matrix.max().idxmax()] = True
+        ### Initialize the subset mask
+        subset_mask = self._init_subset_mask(warm_start, warm_subset)
 
         ### Sequential Kennard-Stone algorithm
         while subset_mask.sum() < n_sub_samples:
@@ -309,3 +306,50 @@ class KennardStone:
 
         ### Return the subset and the remaining samples
         return self.df[subset_mask].copy()
+    
+    def _init_subset_mask(self, warm_start, warm_subset):
+        """
+        Initialize the subset mask.
+
+        Parameters
+        ----------
+        warm_start : bool
+            If True, the subset will be initialized with the provided warm_subset.
+        warm_subset : pd.Index or list
+            The subset of samples to be included in the initial subset. Only used if warm_start is True.
+
+        Returns
+        -------
+        subset_mask : pd.Series
+            A boolean Series with the same index as the input DataFrame indicating the first subset member(s).
+                
+        Raises
+        ------
+        ValueError
+            If warm_start is True and warm_subset is None.
+            
+        Notes
+        -----
+        - If warm_start is False, one sample is selected. 
+        - If warm_start is True, all samples in warm_subset are selected.        
+        """
+        ### Initialize the boolean mask for the subset
+        subset_mask = pd.Series(False, index=self.df.index)
+
+        ### Allows for predefined subset members (optional)
+        if warm_start:
+            ### Check if the warm subset is provided
+            if warm_subset is None:
+                raise ValueError("Warm start requires a warm subset.")
+            
+            ### Update the subset mask with the warm subset
+            subset_mask.loc[warm_subset] = True
+        
+        ### Select the first sample
+        else: 
+            ### Select one sample with the maximum distance to another sample
+            # .idxmax() only returns the first occurrence
+            # potential source of randomness if more than two samples are equally distant
+            subset_mask.loc[self.distance_matrix.max().idxmax()] = True
+        
+        return subset_mask
