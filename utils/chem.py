@@ -189,7 +189,11 @@ class KennardStone:
     ----------
     df : pd.DataFrame
         DataFrame with the input data with binary values (e.g. Morgan fingerprints). Requires the index to be unique.
-
+    distance_matrix : pd.DataFrame
+        Symmetrical distance matrix. Hamming distance by default. Can be any distance metric (Euclidean, Jaccard, etc.),
+        but not a similarity matrix (e.g. Tanimoto)
+    subset_mask : pd.Series
+        Boolean vector for selected subset. 
     """
 
     def __init__(self):
